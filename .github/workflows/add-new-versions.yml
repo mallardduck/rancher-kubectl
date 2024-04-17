@@ -99,3 +99,19 @@ jobs:
                 core.info(`Closed previous pull request: ${existing.html_url}`)
               }
             }
+            
+            core.setOutput('pr-key', createdPR.number)
+      - name: Make validation comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = core.getInput('pr-key')
+            github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body:
+              `## Validation steps
+              - Add a 👍 (thumbs up) reaction to this comment once done. CI won't pass without this reaction to the github-action bot's latest validation comment.
+              - Approve the PR to run the CI check.`
+            })
