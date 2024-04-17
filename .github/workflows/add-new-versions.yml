@@ -53,6 +53,7 @@ jobs:
           NEW_VERSIONS: ${{ steps.run.outputs.new_versions }}
           PR_TITLE: "Adding new versions"
         with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const {SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE} = process.env
             # Get a list of existing PRs
