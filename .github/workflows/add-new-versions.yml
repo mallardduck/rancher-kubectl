@@ -72,6 +72,7 @@ jobs:
               base: context.ref,
               head: SOURCE_BRANCH
             })
+            console.log(createdPR)
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
