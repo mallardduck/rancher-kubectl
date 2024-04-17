@@ -68,7 +68,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             github.rest.issues.createComment({
-              issue_number: steps.cpr.outputs.CREATED_PR,
+              issue_number: ${{ steps.cpr.outputs.CREATED_PR }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               body:
