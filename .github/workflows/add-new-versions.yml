@@ -78,7 +78,9 @@ jobs:
               issue_number: createdPR.number,
               labels: ["status/auto-created"]
             })
-            core.info(`Created pull request: ${createdPR.html_url}`)
+            const newPullStatus = `Created pull request: ${createdPR.html_url}`
+            core.info(newPullStatus)
+            core.summary.addRaw(newPullStatus, true)
 
             if (existingPRs) {
               const reason = `Superseded by ${createdPR.html_url}`
@@ -96,16 +98,18 @@ jobs:
                   issue_number: existing.number,
                   state: "closed",
                 });
-                core.info(`Closed previous pull request: ${existing.html_url}`)
+                const newPullStatus = `Closed previous pull request: ${existing.html_url}`
+                core.info(newPullStatus)
+                core.summary.addRaw(newPullStatus, true)
               }
             }
             
-            core.setOutput('pr-key', createdPR.number)
+            core.exportVariable('prNumber', createdPR.number)
       - name: Make validation comment
         uses: actions/github-script@v7
         with:
           script: |
-            const prNumber = core.getInput('pr-key')
+            const {prNumber} = process.env
             github.rest.issues.createComment({
               issue_number: prNumber,
               owner: context.repo.owner,
