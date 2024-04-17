@@ -55,15 +55,12 @@ jobs:
         with:
           script: |
             const {SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE} = process.env
-            async function findExistingPR() {
               const { data: existingPRs } = await github.rest.pulls.list({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
                 per_page: 100
               });
-      
-              return existingPRs.find(pr => pr.title === PR_TITLE);
-            }
-            
-            const existingPR = await findExistingPR();
+            const existingPR = existingPRs.find(pr => pr.title === PR_TITLE);
+            console.log(existingPR)
+
