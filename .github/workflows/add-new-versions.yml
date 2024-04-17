@@ -55,21 +55,15 @@ jobs:
         with:
           script: |
             const {SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE} = process.env
-            console.log(SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE)
-      - name: Make validation comment
-        env:
-          CREATED_PR: ${{ steps.cpr.outputs.CREATED_PR }}
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const {CREATED_PR} = process.env
-            github.rest.pulls.createComment({
-              issue_number: `${CREATED_PR}`,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body:
-              `## Validation steps
-              - Add a 👍 (thumbs up) reaction to this comment once done. CI won't pass without this reaction to the github-action bot's latest validation comment.
-              - Approve the PR to run the CI check.`
-            })
+            async function findExistingPR() {
+              const { data: existingPRs } = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                per_page: 100
+              });
+      
+              return existingPRs.find(pr => pr.title === PR_TITLE);
+            }
+            
+            const existingPR = await findExistingPR();
