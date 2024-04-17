@@ -55,14 +55,7 @@ jobs:
         with:
           script: |
             const {SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE} = process.env
-            # Get a list of existing PRs
-            const pulls = github.rest.pulls.list({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              per_page: 100
-            })
-            console.log(pulls)
+            console.log(SOURCE_BRANCH, NEW_VERSIONS, PR_TITLE)
       - name: Make validation comment
         env:
           CREATED_PR: ${{ steps.cpr.outputs.CREATED_PR }}
