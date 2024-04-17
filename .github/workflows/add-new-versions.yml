@@ -78,6 +78,7 @@ jobs:
               issue_number: createdPR.number,
               labels: ["status/auto-created"]
             })
+            core.info(`Created pull request: ${createdPR.html_url}`)
 
             if (existingPRs) {
               const reason = `Superseded by ${createdPR.html_url}`
@@ -95,5 +96,6 @@ jobs:
                   issue_number: existing.number,
                   state: "closed",
                 });
+                core.info(`Closed previous pull request: ${existing.html_url}`)
               }
             }
