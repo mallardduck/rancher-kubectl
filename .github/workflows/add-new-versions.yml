@@ -81,6 +81,12 @@ jobs:
 
             if (existingPRs) {
               for (const existing of existingPRs) {
-                console.log(existingPRs)
+                github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: existing.number,
+                  state: "closed",
+                  state_reason: `Superseded by ${createdPR.url}`
+                });
               }
             }
