@@ -105,7 +105,7 @@ jobs:
             }
             
             github.rest.issues.createComment({
-              issue_number: prNumber,
+              issue_number: createdPR.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body:
@@ -113,5 +113,6 @@ jobs:
               - Add a review where you approve the PR`
             })
   trigger-validate:
+    needs: [add-new-versions]
     name: Trigger version validation
     uses: ./.github/workflows/validate-pr.yml
