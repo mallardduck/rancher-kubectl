@@ -80,7 +80,7 @@ jobs:
             })
 
             if (existingPRs) {
-              const reason = `Superseded by ${createdPR.url}`
+              const reason = `Superseded by ${createdPR.html_url}`
               for (const existing of existingPRs) {
                 github.rest.issues.createComment({
                   owner: context.repo.owner,
