@@ -112,5 +112,6 @@ jobs:
               `## Validation steps
               - Add a review where you approve the PR`
             })
-      - name: Trigger Validate
-        uses: .github/workflows/validate-pr.yml
+  trigger-validate:
+    name: Trigger version validation
+    uses: ./.github/workflows/validate-pr.yml
