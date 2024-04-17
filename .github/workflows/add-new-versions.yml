@@ -76,7 +76,7 @@ jobs:
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: createdPR.id,
+              issue_number: createdPR.number,
               labels: ["status/auto-created"]
             })
 
