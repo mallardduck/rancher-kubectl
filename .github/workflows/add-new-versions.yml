@@ -38,7 +38,7 @@ jobs:
         id: branch
         run: |
           BRANCH="githubaction-add-new-versions-$(date +%Y-%m-%d-%H-%M-%S)"
-          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
+          echo "SOURCE_BRANCH=${BRANCH}" >> "$GITHUB_ENV"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git checkout -b "$BRANCH"
@@ -46,7 +46,6 @@ jobs:
           git push origin "$BRANCH"
       - name: Prepare PR text
         env:
-          SOURCE_BRANCH: ${{ steps.branch.outputs.branch }}
           NEW_VERSIONS: ${{ steps.run.outputs.new_versions }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_TITLE: "Adding new versions"
@@ -57,15 +56,12 @@ jobs:
           echo -e "\\n- For checks to run, the PR must have a review submitted first." >> pr.txt
           echo -e "\\n\\n After status checks pass the PR can be merged." >> pr.txt
           PR_TEXT=$(cat pr.txt)
-          echo "PR_TEXT=$PR_TEXT" >> "$GITHUB_OUTPUT"
+          echo "PR_BODY=${PR_TEXT}" >> "$GITHUB_ENV"
           rm pr.txt
       - name: Create Pull Request
         if: ${{ env.changes_exist == 'true' }}
         id: cpr
         env:
-          PR_BODY: ${{ steps.color-selector.outputs.PR_TEXT }}
-          SOURCE_BRANCH: ${{ steps.branch.outputs.branch }}
-          NEW_VERSIONS: ${{ steps.run.outputs.new_versions }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_TITLE: "Adding new versions"
         run: |
