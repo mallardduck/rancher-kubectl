@@ -61,3 +61,7 @@ jobs:
               gh pr close --comment "Superseded by ${CREATED_PR}" --delete-branch "${EXISTING_PR}"
               echo "Closed previous pull request: ${EXISTING_PR}" >> $GITHUB_STEP_SUMMARY
           fi
+  trigger-validate:
+    needs: [add-new-versions]
+    name: Trigger version validation
+    uses: ./.github/workflows/validate-pr.yml
