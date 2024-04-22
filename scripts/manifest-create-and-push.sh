@@ -8,20 +8,20 @@ archs="amd64 arm64"
 docker_manifest_create_and_push()
 {
   for arch in $archs; do
-    docker manifest create --amend ${1?required} "${1}-${arch}"
-    docker manifest annotate $1 "$1-${arch}" --os linux --arch ${arch}
+    docker manifest create --amend "${1?required}" "${1}-${arch}"
+    docker manifest annotate "$1" "$1-${arch}" --os linux --arch "${arch}"
   done
-  docker manifest push $1
+  docker manifest push "$1"
 }
 
-echo "${DOCKER_PASSWORD}" | docker login -u $DOCKER_USERNAME --password-stdin
+echo "${DOCKER_PASSWORD}" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-for KUBERNETES_RELEASE in $(cat versions.txt); do                                                                                                                                                                                                                                                                             
+while IFS= read -r KUBERNETES_RELEASE; do
   echo "Checking if manifest ${REPO}:${KUBERNETES_RELEASE} already exists"
   if skopeo inspect "docker://${REPO}:${KUBERNETES_RELEASE}" >/dev/null 2>&1; then
     echo "Manifest ${REPO}:${KUBERNETES_RELEASE} already exists, skipping"
     continue
   fi
 
-  docker_manifest_create_and_push ${REPO}:${KUBERNETES_RELEASE}
-done
+  docker_manifest_create_and_push ${REPO}:"${KUBERNETES_RELEASE}"
+done < versions.txt
