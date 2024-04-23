@@ -2,7 +2,6 @@
 set -e
 
 : ${REPO:=rancher/kubectl}
-: ${EXISTING_VERSIONS:=""}
 
 while IFS= read -r KUBERNETES_RELEASE; do
   echo "Checking if image ${REPO}:${KUBERNETES_RELEASE} exists"
