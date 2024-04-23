@@ -9,7 +9,7 @@ on:
       - 'package/Dockerfile'
 
 env:
-  IMAGE_REPO: mallardduck/kubectl
+  IMAGE_REPO: mallardduck/rancher-kubectl
 
 jobs:
   validate-versions:
