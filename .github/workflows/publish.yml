@@ -9,7 +9,16 @@ env:
   IMAGE_REPO: mallardduck/kubectl
 
 jobs:
+  validate-versions:
+    name: "Check kubectl release versions"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: scripts/check-versions.sh
   image-prebuild:
+    needs:
+      - validate-versions
     name: Precompile list of builds
     runs-on: ubuntu-latest
     outputs:
@@ -35,7 +44,8 @@ jobs:
       - run: |
           echo "${{ steps.new-versions.outputs.value }}"
   image-build:
-    needs: [image-prebuild]
+    needs:
+      - image-prebuild
     name: Build and push image
     runs-on: ubuntu-latest
     strategy:
