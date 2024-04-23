@@ -1,0 +1,29 @@
+name: Add Versions PR Cleanup
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == false && contains(github.event.pull_request.labels.*.name, 'status/auto-created')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check if branch exists
+        id: check-branch
+        run: |
+          branch_name=$(echo "${{ github.event.pull_request.head.ref }}")
+          if git rev-parse --verify --quiet $branch_name > /dev/null; then
+            echo "Branch $branch_name exists" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          else
+            echo "Branch $branch_name does not exist" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+      - name: Delete branch
+        if: steps.check-branch.outcome == 'success'
+        run: |
+          branch_name=$(echo "${{ github.event.pull_request.head.ref }}")
+          git push --delete origin $branch_name
