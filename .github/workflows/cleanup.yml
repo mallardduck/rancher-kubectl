@@ -7,7 +7,7 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == false && contains(github.event.pull_request.labels.*.name, 'status/auto-created')
+    if: contains(github.event.pull_request.labels.*.name, 'status/auto-created')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4.1.3

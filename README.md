@@ -22,8 +22,8 @@ Before a PR can be merged it must be:
 ## Digging Deeper
 
 The source for the versions to create the images is in `versions.txt`.
-This file is maintained by the scheduled [`add-new-veresions.yml`](./.github/workflows/add-new-versions.yml) workflow which automatically looks up new versions and creates a pull request.
-Additionally, you can manually add entries to it or manually run the [GitHub Actions workflow](./.github/workflows/add-new-versions.yml) to create an automatic PR on-demand.
+This file is maintained by the scheduled [`add-new-veresions.yml`](./.github/workflows/check-new-versions.yml) workflow which automatically looks up new versions and creates a pull request.
+Additionally, you can manually add entries to it or manually run the [GitHub Actions workflow](./.github/workflows/check-new-versions.yml) to create an automatic PR on-demand.
 
 Scripts live in the `./scripts` directory:
 

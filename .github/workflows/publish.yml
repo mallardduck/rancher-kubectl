@@ -4,16 +4,12 @@ on:
     paths:
       - 'versions.txt'
       - 'package/Dockerfile'
-  pull_request:
-    types:
-      - closed
 
 env:
   IMAGE_REPO: mallardduck/kubectl
 
 jobs:
   validate-versions:
-    if: github.event.pull_request.merged == true
     name: "Validate versions.txt"
     runs-on: ubuntu-latest
     steps:
