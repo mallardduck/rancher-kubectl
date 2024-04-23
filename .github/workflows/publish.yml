@@ -12,13 +12,8 @@ env:
   IMAGE_REPO: mallardduck/kubectl
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo The PR was merged
   validate-versions:
+    if: github.event.pull_request.merged == true
     needs:
       - if_merged
     name: "Check kubectl release versions"
