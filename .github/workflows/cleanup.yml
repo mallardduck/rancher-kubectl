@@ -28,16 +28,20 @@ jobs:
                   .addRaw("The PR branch was found and will be cleaned up.")
                   .write();
               } else {
+
+                core.setFailed("Branch not found, nothing to clean. (failure can be ignored)");
+              }
+            }
+            catch (err) {
+              if (err.response && err.response.status === 404) {
                 await core.summary
                   .addHeading("PR Branch Not Found", 2)
                   .addRaw("The PR branch didn't exist; the action failure can be ignored.")
                   .write();
                 core.setFailed("Branch not found, nothing to clean. (failure can be ignored)");
+              } else {
+                core.setFailed(`Action failed with error ${err}`);
               }
-            }
-            catch (err) {
-              // setFailed logs the message and sets a failing exit code
-              core.setFailed(`Action failed with error ${err}`);
             }
 
             
