@@ -10,7 +10,7 @@ jobs:
     if: github.event.pull_request.merged == false && contains(github.event.pull_request.labels.*.name, 'status/auto-created')
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.3
       - name: Check PR branch exists
         id: check-branch
         uses: actions/github-script@v7
