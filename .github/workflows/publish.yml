@@ -1,6 +1,9 @@
 name: Publish Images
 on:
   push:
+    paths:
+      - 'versions.txt'
+      - 'package/Dockerfile'
   pull_request:
     types:
       - closed
