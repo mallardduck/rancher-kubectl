@@ -1,6 +1,9 @@
 name: Publish Images
 on:
   push:
+    branches:
+      - 'master'
+      - 'gha-testing'
     paths:
       - 'versions.txt'
       - 'package/Dockerfile'
