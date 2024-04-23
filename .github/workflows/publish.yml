@@ -42,8 +42,10 @@ jobs:
           touch new-versions.txt
           ./scripts/new-versions.sh
           JSON=$(jq -R . new-versions.txt | jq -sc .)
+          NEW_COUNT=$(wc -l new-versions.txt |awk '{print $1}')
           echo "value=${JSON}"
           echo "value=${JSON}" >> "$GITHUB_OUTPUT"
+          echo "Found ${NEW_COUNT} new kubectl versions to build" >> $GITHUB_STEP_SUMMARY
       - run: |
           echo "${{ steps.new-versions.outputs.value }}"
   image-build:
