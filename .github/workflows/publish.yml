@@ -14,9 +14,7 @@ env:
 jobs:
   validate-versions:
     if: github.event.pull_request.merged == true
-    needs:
-      - if_merged
-    name: "Check kubectl release versions"
+    name: "Validate versions.txt"
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -25,7 +23,7 @@ jobs:
   image-prebuild:
     needs:
       - validate-versions
-    name: Precompile list of builds
+    name: Identify new versions
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.new-versions.outputs.value }}
@@ -37,7 +35,7 @@ jobs:
         run: |
           VALUES=$(skopeo list-tags docker://${IMAGE_REPO} |jq '.Tags | join(" ")')
           echo "EXISTING_VERSIONS=${VALUES}" >> "$GITHUB_OUTPUT"
-      - name: Find new versions
+      - name: Filter new versions
         id: new-versions
         env:
           EXISTING_VERSIONS: ${{ steps.existing-version.outputs.EXISTING_VERSIONS }}
@@ -52,7 +50,7 @@ jobs:
   image-build:
     needs:
       - image-prebuild
-    name: Build and push image
+    name: Build and push Image(s)
     runs-on: ubuntu-latest
     strategy:
       matrix:
