@@ -18,7 +18,7 @@ jobs:
           result-encoding: string
           retries: 3
           script: |
-            let branch = github.rest.git.getRef({
+            let branch = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "heads/${{ github.event.pull_request.head.ref }}"
