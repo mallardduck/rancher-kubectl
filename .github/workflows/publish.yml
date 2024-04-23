@@ -46,8 +46,6 @@ jobs:
           echo "value=${JSON}"
           echo "value=${JSON}" >> "$GITHUB_OUTPUT"
           echo "Found ${NEW_COUNT} new kubectl versions to build" >> $GITHUB_STEP_SUMMARY
-      - run: |
-          echo "${{ steps.new-versions.outputs.value }}"
   image-build:
     needs:
       - image-prebuild
