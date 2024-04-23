@@ -18,9 +18,18 @@ jobs:
           result-encoding: string
           retries: 3
           script: |
-            let {status: status, data: branch} = await github.rest.git.getRef({
+            let {status: status} = await github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: "heads/${{ github.event.pull_request.head.ref }}"
             })
-            console.log(status, branch)
+            if (status) {
+              await core.summary
+                .addHeading("PR Branch Found")
+                .addRaw("The PR branch was found and will be cleaned up");
+            } else {
+              await core.summary
+                .addHeading("PR Branch Not Found")
+                .addRaw("The PR branch didn't exist; the action failure can be ignored.");
+              core.setFailed("Branch not found, nothing to clean. (failure can be ignored)");
+            }
