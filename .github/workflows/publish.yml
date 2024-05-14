@@ -72,6 +72,8 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_REPO }}:${{ matrix.version }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            KUBERNETES_RELEASE=${{ matrix.version }}
       - name: Unit test image
         run: scripts/unit-test-image.sh ${{ matrix.version }}
         env:
