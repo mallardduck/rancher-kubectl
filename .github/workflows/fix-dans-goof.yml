@@ -6,38 +6,15 @@ env:
   IMAGE_REPO: mallardduck/rancher-kubectl
 
 jobs:
-  image-prebuild:
-    name: Seed the goofed up versions
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.new-versions.outputs.value }}
-    steps:
-      - name: Filter new versions
-        id: new-versions
-        env:
-          EXISTING_VERSIONS: ${{ steps.existing-version.outputs.EXISTING_VERSIONS }}
-        run: |
-          touch new-versions.txt
-          echo v1.30.0 >> new-versions.txt
-          echo v1.29.4 >> new-versions.txt
-          echo v1.28.9 >> new-versions.txt
-          echo v1.27.13 >> new-versions.txt
-          JSON=$(jq -R . new-versions.txt | jq -sc .)
-          NEW_COUNT=$(wc -l new-versions.txt |awk '{print $1}')
-          echo "value=${JSON}"
-          echo "value=${JSON}" >> "$GITHUB_OUTPUT"
-          echo "Found ${NEW_COUNT} new kubectl versions to build" >> $GITHUB_STEP_SUMMARY
   image-build:
     permissions:
       contents: read
       id-token: write # this is important, it's how we authenticate with Vault
-    needs:
-      - image-prebuild
     name: Build and push Image(s)
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: ${{fromJSON(needs.image-prebuild.outputs.matrix)}}
+        version: ${{fromJSON('["v1.30.0","v1.29.4","v1.28.9","v1.27.13"]')}}
     steps:
       - name: Check out repository code
         uses: actions/checkout@44c2b7a8a4ea60a981eaca3cf939b5f4305c123b # v4.1.5
