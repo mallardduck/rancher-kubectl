@@ -52,4 +52,6 @@ if [[ $OUT =~ .*${VERSION}.* ]]; then
 fi
 
 echo "FAIL: Expected version not found in output."
+echo "Output Found:"
+echo "$OUT"
 exit 1
