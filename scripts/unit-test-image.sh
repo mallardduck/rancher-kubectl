@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 # Define usage function
 usage() {
@@ -46,7 +45,7 @@ if [ "$PULL" == "TRUE" ]; then
 fi
 
 echo "Testing run..."
-OUT=$(docker run --rm -it  "$IMAGE_NAME" version --client=true)
+OUT=$(docker run --rm "$IMAGE_NAME" version --client=true)
 if [[ $OUT =~ .*${VERSION}.* ]]; then
   echo "PASS: Expected version found in output."
   exit 0
