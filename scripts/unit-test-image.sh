@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -x
+
 # Define usage function
 usage() {
     echo "Usage: $0 [-P optional image pull] kubectl_version"
