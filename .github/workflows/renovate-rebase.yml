@@ -36,7 +36,6 @@ jobs:
             }
   debug:
     needs: checkbox-status
-    if: ${{ needs.checkbox-status.outputs.isChecked == true }}
     runs-on: ubuntu-latest
     steps:
       - name: Check if PR description checkbox is checked
@@ -44,4 +43,5 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            console.log(needs.checkbox-status)
             await core.summary.addRaw("End step RAN!!").write()
