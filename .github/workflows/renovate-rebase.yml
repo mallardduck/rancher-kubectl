@@ -29,7 +29,7 @@ jobs:
               statusText = `Checkbox is ${isChecked ? 'checked' : 'not checked'}`
               await core.summary.addRaw(statusText, true).write()
               core.info(statusText);
-              return { result: isChecked };
+              return { isChecked };
             } else {
               core.summary.addRaw("Rebase checkbox not found in PR comment.", true)
               core.setFailed('Checkbox not found in PR description');
