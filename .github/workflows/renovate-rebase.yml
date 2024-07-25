@@ -9,6 +9,7 @@ concurrency:
 
 jobs:
   checkbox-status:
+    if: github.event.pull_request.user.login == 'github-actions'
     runs-on: ubuntu-latest
     outputs:
       isChecked: ${{ steps.check-checkbox.outputs.result }}
@@ -34,18 +35,8 @@ jobs:
               core.summary.addRaw("Rebase checkbox not found in PR comment.", true)
               core.setFailed('Checkbox not found in PR description');
             }
-  debug:
+  call-workflow:
     needs: checkbox-status
     if: ${{ needs.checkbox-status.outputs.isChecked == 'true' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if PR description checkbox is checked
-        id: check-checkbox
-        uses: actions/github-script@v7
-        env:
-          DEBUG: ${{ needs.checkbox-status.outputs.isChecked }}
-        with:
-          script: |
-            const {DEBUG} = process.env;
-            console.log(DEBUG);
-            await core.summary.addRaw("End step RAN!!").write()
+    uses: rancher/renovate-config/.github/workflows/renovate.yml@release
+    secrets: inherit
