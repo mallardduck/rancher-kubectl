@@ -5,8 +5,10 @@ on:
 
 
 jobs:
-  check-checkbox-status:
+  checkbox-status:
     runs-on: ubuntu-latest
+    outputs:
+      isChecked: ${{ steps.check-checkbox.outputs.isChecked }}
     steps:
       - name: Check if PR description checkbox is checked
         id: check-checkbox
@@ -14,4 +16,13 @@ jobs:
         with:
           script: |
             const prBody = context.payload.pull_request.body;
-            console.log(prBody)
+            const checkboxPattern = /- \[([ xX])\] <!-- rebase-check -->/;
+            const match = prBody.match(checkboxPattern);
+
+            if (match) {
+              const isChecked = match[1].toLowerCase() === 'x';
+              core.info(`Checkbox is ${isChecked ? 'checked' : 'not checked'}`);
+              return { isChecked };
+            } else {
+              core.setFailed('Checkbox not found in PR description');
+            }
