@@ -20,9 +20,13 @@ jobs:
             const match = prBody.match(checkboxPattern);
 
             if (match) {
+              core.summary.addRaw("Rebase checkbox found in PR comment.", true)
               const isChecked = match[1].toLowerCase() === 'x';
-              core.info(`Checkbox is ${isChecked ? 'checked' : 'not checked'}`);
+              statusText = `Checkbox is ${isChecked ? 'checked' : 'not checked'}`
+              core.summary.addRaw(statusText, true)
+              core.info(statusText);
               return { isChecked };
             } else {
+              core.summary.addRaw("Rebase checkbox not found in PR comment.", true)
               core.setFailed('Checkbox not found in PR description');
             }
