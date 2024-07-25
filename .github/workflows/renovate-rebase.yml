@@ -11,7 +11,7 @@ jobs:
   checkbox-status:
     runs-on: ubuntu-latest
     outputs:
-      isChecked: ${{ steps.check-checkbox.outputs.isChecked }}
+      isChecked: ${{ steps.check-checkbox.outputs.result }}
     steps:
       - name: Check if PR description checkbox is checked
         id: check-checkbox
@@ -29,7 +29,7 @@ jobs:
               statusText = `Checkbox is ${isChecked ? 'checked' : 'not checked'}`
               await core.summary.addRaw(statusText, true).write()
               core.info(statusText);
-              return { isChecked: isChecked };
+              return { result: isChecked };
             } else {
               core.summary.addRaw("Rebase checkbox not found in PR comment.", true)
               core.setFailed('Checkbox not found in PR description');
