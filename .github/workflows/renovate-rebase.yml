@@ -20,7 +20,7 @@ jobs:
             const match = prBody.match(checkboxPattern);
 
             if (match) {
-              await core.summary.addRaw("Rebase checkbox found in PR comment.", true).write()
+              await core.summary.addRaw("Rebase checkbox found in PR comment.").write()
               const isChecked = match[1].toLowerCase() === 'x';
               statusText = `Checkbox is ${isChecked ? 'checked' : 'not checked'}`
               await core.summary.addRaw(statusText, true).write()
@@ -30,3 +30,14 @@ jobs:
               core.summary.addRaw("Rebase checkbox not found in PR comment.", true)
               core.setFailed('Checkbox not found in PR description');
             }
+  debug:
+    needs: checkbox-status
+    if: ${{ needs.checkbox-status.outputs.isChecked == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if PR description checkbox is checked
+        id: check-checkbox
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await core.summary.addRaw("End step RAN!!").write()
