@@ -36,7 +36,7 @@ jobs:
             }
   debug:
     needs: checkbox-status
-    if: ${{ needs.checkbox-status.outputs.isChecked == true }}
+    if: ${{ needs.checkbox-status.outputs.isChecked == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Check if PR description checkbox is checked
