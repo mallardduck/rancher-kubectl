@@ -18,7 +18,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            console.log(github.event);
+            console.log(context.actor);
             const prUrl = context.payload.pull_request.html_url;
             const prBody = context.payload.pull_request.body;
             const checkboxPattern = /- \[([ xX])\] <!-- rebase-check -->/;
