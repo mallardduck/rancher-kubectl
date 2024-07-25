@@ -20,10 +20,10 @@ jobs:
             const match = prBody.match(checkboxPattern);
 
             if (match) {
-              core.summary.addRaw("Rebase checkbox found in PR comment.", true)
+              await core.summary.addRaw("Rebase checkbox found in PR comment.", true).write()
               const isChecked = match[1].toLowerCase() === 'x';
               statusText = `Checkbox is ${isChecked ? 'checked' : 'not checked'}`
-              core.summary.addRaw(statusText, true)
+              await core.summary.addRaw(statusText, true).write()
               core.info(statusText);
               return { isChecked };
             } else {
