@@ -11,7 +11,7 @@ jobs:
   checkbox-status:
     runs-on: ubuntu-latest
     outputs:
-      isChecked: ${{ steps.check-checkbox.outputs.result }}
+      isChecked: ${{ steps.check-checkbox.outputs.result.isChecked }}
     steps:
       - name: Check if PR description checkbox is checked
         id: check-checkbox
